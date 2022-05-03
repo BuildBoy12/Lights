@@ -94,9 +94,20 @@ namespace Lights.Commands
                 if (arguments.Count > 5 && float.TryParse(arguments.At(5), out var b))
                     rgb[2] = b;
 
+                if (arguments.At(0) == "*")
+                {
+                    foreach (Room item in Room.List)
+                    {
+                        item.TryExecute(modifierType, duration, rgb);
+                    }
+
+                    response = $"Successfully used {modifierType} mode on all rooms.";
+                    return true;
+                }
+
                 if (Enum.TryParse(arguments.At(0), out RoomType roomType))
                 {
-                    foreach (var item in Room.List)
+                    foreach (Room item in Room.List)
                     {
                         if (item.Type != roomType)
                             continue;
@@ -107,9 +118,10 @@ namespace Lights.Commands
                     response = $"Successfully used {modifierType} mode on all rooms of type {roomType}.";
                     return true;
                 }
-                else if (Enum.TryParse(arguments.At(0), out ZoneType zoneType))
+
+                if (Enum.TryParse(arguments.At(0), out ZoneType zoneType))
                 {
-                    foreach (var item in Room.List)
+                    foreach (Room item in Room.List)
                     {
                         if (item.Zone != zoneType)
                             continue;
@@ -120,17 +132,13 @@ namespace Lights.Commands
                     response = $"Successfully used {modifierType} mode on all rooms inside {zoneType}.";
                     return true;
                 }
-                else
-                {
-                    response = HelpMessage();
-                    return false;
-                }
-            }
-            else
-            {
-                response = $"Could not recognize that mode, type \"{Command}\" for the correct usage.";
+
+                response = HelpMessage();
                 return false;
             }
+
+            response = $"Could not recognize that mode, type \"{Command}\" for the correct usage.";
+            return false;
         }
 
         private string HelpMessage() =>

@@ -77,7 +77,7 @@ namespace Lights.Configs
         public Dictionary<string, Preset<ZoneType>[]> PerZone { get; set; } = new Dictionary<string, Preset<ZoneType>[]>()
         {
             {
-                "myZonePreset1", new Preset<ZoneType>[]
+                "myZonePreset1", new[]
                 {
                     new Preset<ZoneType>(ZoneType.Entrance, ModifierType.Blackout, 45, 0),
                     new Preset<ZoneType>(ZoneType.Surface, ModifierType.Color, -1, 255, 100, 255),
@@ -85,7 +85,7 @@ namespace Lights.Configs
                 }
             },
             {
-                "myZonePreset2", new Preset<ZoneType>[]
+                "myZonePreset2", new[]
                 {
                     new Preset<ZoneType>(ZoneType.HeavyContainment, ModifierType.Blackout, 15, 0),
                     new Preset<ZoneType>(ZoneType.Surface, ModifierType.Color, -1, 255, 100, 255),

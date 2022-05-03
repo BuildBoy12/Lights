@@ -28,15 +28,13 @@ namespace Lights
         public EventHandlers(Plugin plugin)
         {
             config = plugin.Config;
-
-            DisabledTeslas = new List<int>();
         }
 
         /// <summary>
         /// Gets a <see cref="List{T}"/> containing the <see cref="UnityEngine.Object.GetInstanceID()">Instance IDs</see> of all rooms
         /// whose lights were affected (Depending on config settings), teslas in these rooms won't trigger.
         /// </summary>
-        public List<int> DisabledTeslas { get; }
+        public List<int> DisabledTeslas { get; } = new List<int>();
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Server.OnRoundStarted"/>
         public void OnRoundStarted() => Plugin.Coroutines.Add(Timing.RunCoroutine(SetupPresets()));
@@ -49,6 +47,7 @@ namespace Lights
 
             Plugin.Coroutines.Clear();
             DisabledTeslas.Clear();
+            Plugin.Instance.ColorQueue.Clear();
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnTriggeringTesla(TriggeringTeslaEventArgs)"/>

@@ -35,6 +35,11 @@ namespace Lights
         /// </summary>
         public static List<CoroutineHandle> Coroutines { get; } = new List<CoroutineHandle>();
 
+        /// <summary>
+        /// Gets the color queue class instance.
+        /// </summary>
+        public ColorQueue ColorQueue { get; private set; }
+
         /// <inheritdoc />
         public override string Name => "LightsRE";
 
@@ -45,7 +50,7 @@ namespace Lights
         public override string Prefix => "lights";
 
         /// <inheritdoc />
-        public override Version Version => new Version(5, 0, 0);
+        public override Version Version { get; } = new Version(5, 0, 0);
 
         /// <inheritdoc />
         public override Version RequiredExiledVersion { get; } = new Version(5, 1, 2);
@@ -54,8 +59,12 @@ namespace Lights
         public override void OnEnabled()
         {
             Instance = this;
+            ColorQueue = new ColorQueue();
             EventHandlers = new EventHandlers(this);
-            RegisterEvents();
+            ServerHandlers.RoundStarted += EventHandlers.OnRoundStarted;
+            ServerHandlers.RoundEnded += EventHandlers.OnRoundEnded;
+            PlayerHandlers.TriggeringTesla += EventHandlers.OnTriggeringTesla;
+            WarheadHandlers.Stopping += EventHandlers.OnStopping;
 
             base.OnEnabled();
         }
@@ -63,27 +72,16 @@ namespace Lights
         /// <inheritdoc />
         public override void OnDisabled()
         {
-            UnregisterEvents();
-            EventHandlers = null;
-            Instance = null;
-
-            base.OnDisabled();
-        }
-
-        private void RegisterEvents()
-        {
-            ServerHandlers.RoundStarted += EventHandlers.OnRoundStarted;
-            ServerHandlers.RoundEnded += EventHandlers.OnRoundEnded;
-            PlayerHandlers.TriggeringTesla += EventHandlers.OnTriggeringTesla;
-            WarheadHandlers.Stopping += EventHandlers.OnStopping;
-        }
-
-        private void UnregisterEvents()
-        {
             ServerHandlers.RoundStarted -= EventHandlers.OnRoundStarted;
             ServerHandlers.RoundEnded -= EventHandlers.OnRoundEnded;
             PlayerHandlers.TriggeringTesla -= EventHandlers.OnTriggeringTesla;
             WarheadHandlers.Stopping -= EventHandlers.OnStopping;
+            EventHandlers = null;
+            ColorQueue?.Clear();
+            ColorQueue = null;
+            Instance = null;
+
+            base.OnDisabled();
         }
     }
 }

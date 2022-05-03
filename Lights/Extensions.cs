@@ -65,18 +65,12 @@ namespace Lights
                         return false;
                     }
 
-                    var color = room.Color;
-
-                    room.Color = new UnityEngine.Color(arguments[0] / 255f, arguments[1] / 255f, arguments[2] / 255f);
-
                     if (!Plugin.Instance.Config.TeslaGates.SmartGates)
                     {
-                        // There's a price you gotta pay for customization. :')
-                        var r = room.Color.r < Plugin.Instance.Config.TeslaGates.ColorSettings.R;
-                        var g = room.Color.g < Plugin.Instance.Config.TeslaGates.ColorSettings.G;
-                        var b = room.Color.b < Plugin.Instance.Config.TeslaGates.ColorSettings.B;
-                        var shouldDisableTeslas =
-                            Plugin.Instance.Config.TeslaGates.ColorSettings.RequireAllMinimums ? r && g && b : r || g || b;
+                        bool r = room.Color.r < Plugin.Instance.Config.TeslaGates.ColorSettings.R;
+                        bool g = room.Color.g < Plugin.Instance.Config.TeslaGates.ColorSettings.G;
+                        bool b = room.Color.b < Plugin.Instance.Config.TeslaGates.ColorSettings.B;
+                        bool shouldDisableTeslas = Plugin.Instance.Config.TeslaGates.ColorSettings.RequireAllMinimums ? r && g && b : r || g || b;
 
                         if (shouldDisableTeslas)
                         {
@@ -85,14 +79,15 @@ namespace Lights
                         }
                     }
 
-                    if (duration > -1)
-                    {
-                        Plugin.Coroutines.Add(Timing.CallDelayed(duration, () =>
+                    Plugin.Instance.ColorQueue.Add(
+                        room,
+                        r => r.Color = new UnityEngine.Color(arguments[0] / 255f, arguments[1] / 255f, arguments[2] / 255f),
+                        duration,
+                        r =>
                         {
-                            room.ResetColor();
+                            r.ResetColor();
                             Plugin.EventHandlers.DisabledTeslas.Remove(id);
-                        }));
-                    }
+                        });
 
                     return true;
                 case ModifierType.Blackout:
