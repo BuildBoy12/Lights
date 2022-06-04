@@ -1,9 +1,10 @@
 [![Github All Releases](https://img.shields.io/github/downloads/SebasCapo/Lights/total.svg)](https://github.com/SebasCapo/Lights/releases) [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/SebasCapo/Lights/graphs/commit-activity) [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/SebasCapo/Lights/blob/main/LICENSE)
-<a href="https://github.com/SebasCapo/Lights/releases"><img src="https://img.shields.io/github/v/release/SebasCapo/Lights?include_prereleases&label=Release" alt="Releases"></a>
+<a href="https://github.com/zhaguanyang/Lights/releases"><img src="https://img.shields.io/github/v/release/zhaguanyang/Lights?include_prereleases&label=Release" alt="Releases"></a>
 <a href="https://discord.gg/PyUkWTg"><img src="https://img.shields.io/discord/656673194693885975?color=%23aa0000&label=EXILED" alt="Support"></a>
 
 # Lights 5.0
 An extremely configurable SCP:SL-EXILED Plugin that allows you to control many aspects of it's facility's power systems.
+**Compatiable with EXILED 5.0**
 
 ### What does it do?
 This plugin lets you change a variety of different settings per room and/or zone, these settings vary from changing a lights color, to turning them off! You can even lock all the doors in a room indefinitely or temporarily.
